@@ -14,28 +14,60 @@ enum Category {
   Angular
 }
 
+interface DamageLogger {
+  (p: string): void;
+}
 
-function getAllBooks(): Array<object> {
-  let books: Array<object> = [
+interface Book {
+  id: number;
+  title: string;
+  author: string;
+  available: boolean;
+  category: Category;
+  pages?: number;
+  // markDamaged?: (reason: string) => void;
+  markDamaged?: DamageLogger;
+}
+
+interface Person {
+  name: string;
+  email: string;
+}
+
+interface Author extends Person {
+  numBooksPublished: number;
+}
+
+interface Librarian extends Person {
+  department: string;
+  assistCustomer: (custName: string) => void;
+}
+
+function getAllBooks(): Array<Book> {
+  let books: Array<Book> = [
     { 
+      id: 1,
       title: 'Refactoring JavaScript', 
       author: 'Evan Burchard', 
       available: true,
       category: Category.JavaScript
     },
     { 
+      id: 2,
       title: 'JavaScript Testing',
       author: 'Liang Yuxian Eugene', 
       available: false,
       category: Category.JavaScript
     },
     { 
+      id: 3,
       title: 'CSS Secrets',
       author: 'Lea Verou', 
       available: true,
       category: Category.CSS
     },
     { 
+      id: 4,
       title: 'Mastering JavaScript Object-Oriented Programming',
       author: 'Andrea Chiarelli',
       available: true,
@@ -46,7 +78,7 @@ function getAllBooks(): Array<object> {
   return books;
 }
 
-function logFirstAvailable(books: Array<any>): void{
+function logFirstAvailable(books: Array<any> = getAllBooks()): void{
   const numberOfBooks = books.length;
 
   let title = '';
@@ -63,7 +95,7 @@ function logFirstAvailable(books: Array<any>): void{
 
 }
 
-function getBookTitlesByCategory(category: Category): Array<string> {
+function getBookTitlesByCategory(category: Category = Category.JavaScript): Array<string> {
   console.log(`Category: ${Category[category]}`);
 
   const books:any[] = getAllBooks();
@@ -83,9 +115,138 @@ function logBookTitles(titles: string[]): void {
     console.log(title);
   }
 }
+
+function getBookByID(id: number): Book | undefined {
+  const books = getAllBooks();
+  return books.find((book: any) => book.id === id)
+}
+
+
+function createCustomerID(name: string, id: number): string {
+  return `${name}${id}`;
+}
+
+function createCustomer(name: string, age?: number, city?: string) {
+  console.log(`Customer Name ${name}`);
+
+  if (age) {
+    console.log(`Customer Age: ${age}`);
+  }
+
+  if (city) {
+    console.log(`Customer City: ${city}`);
+  }
+
+}
+
+function сheckoutBooks(customer: string, ...bookIDs: number[]): string[] {
+  console.log(`Customer Name: ${customer}`);
+  const titles: string[] = [];
+
+  for(const id of bookIDs){
+    const book = getBookByID(id);
+    if (book && book.available) {
+      titles.push(book.title);
+    }
+  }
+
+  return titles;
+}
+
+function getTitles(author: string): string[];
+function getTitles(available: boolean): string[];
+function getTitles(bookProperty: string | boolean): string[] {
+  const books: any[] = getAllBooks();
+  const titles: string[] = [];
+
+  if (typeof bookProperty === 'string') {
+    return books
+      .filter(book => book.author === bookProperty)
+      .map(book => book.title);
+  }
+  else if (typeof bookProperty === 'boolean') {
+    return books
+      .filter(book => book.available === bookProperty)
+      .map(book => book.title);
+  }
+}
+
+
+function printBook(book: Book): void {
+  console.log(`${book.title} by ${book.author}`)
+}
 // =========================================================================================
 // Task 01
 // logFirstAvailable(getAllBooks());
 
 // Task 02
-logBookTitles(getBookTitlesByCategory(Category.JavaScript));
+// logBookTitles(getBookTitlesByCategory(Category.JavaScript));
+
+
+// Task 03
+// const titles = getBookTitlesByCategory(Category.JavaScript);
+// titles.forEach(title => console.log(title));
+
+// console.log(getBookByID(2));
+
+// Task04
+// const myId = createCustomerID('Ann', 10);
+// console.log(myId);
+
+// let idGenerator: (name: string, id: number) => string;
+// idGenerator = (name: string, id: number) => `${name}${id}`;
+// idGenerator = createCustomerID;
+// console.log(idGenerator('Anna', 21));
+
+// Task 05
+// createCustomer('Franck');
+// createCustomer('Franck', 35);
+// createCustomer('Franck', 35, 'New York');
+
+// const titles = getBookTitlesByCategory();
+// console.log(titles);
+
+// logFirstAvailable();
+
+// const titles = сheckoutBooks('Ann', 1, 2, 4);
+// console.log(titles);
+
+// Task 06
+// const checkOutBooks = getTitles('Evan Burchard');
+// console.log(checkOutBooks);
+
+// Task 07
+// const myBook: Book = {
+//   id: 5,
+//   title: 'Colors, Backgrounds, and Gradients',
+//   author: 'Eric A. Meyer',
+//   available: true,
+//   category: Category.CSS,
+//   // year: 2015,
+//   // copies: 3
+//   pages: 200,
+//   markDamaged: (reason: string) => console.log(`Damaged: ${reason}`)
+// } 
+
+// printBook(myBook);
+// myBook.markDamaged(`missing back cover`);
+
+// Task 08
+// const logDamage: DamageLogger = (reason: string) => console.log(`Damaged: ${reason}`);
+
+// logDamage(`missing back cover`);
+
+// Task 09
+
+const favoriteAuthor: Author = {
+  email: 'a@a.com',
+  name: 'Ann',
+  numBooksPublished: 10
+};
+
+const favoriteLibrarian: Librarian = {
+  name: 'Boris',
+  email: 'boris@a.com',
+  department:'Classical Literature',
+  assistCustomer: (name: string) => console.log(`Assist ${name}`)
+};
