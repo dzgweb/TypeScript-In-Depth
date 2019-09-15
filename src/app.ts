@@ -175,6 +175,67 @@ function getTitles(bookProperty: string | boolean): string[] {
 function printBook(book: Book): void {
   console.log(`${book.title} by ${book.author}`)
 }
+
+class UniversityLibrarian implements Librarian {
+  name: string;
+  email: string;
+  department: string;
+
+  assistCustomer(custName: string): void {
+    console.log(`${this.name} is assisting ${custName}`);
+  }
+}
+
+abstract class ReferenceItem {
+  // title: string; 
+  // year: number; 
+
+  private _publisher: string
+
+  static department: string = 'Research';
+
+  // constructor(newTitle: string, newYear: number) {
+  //   console.log('Creating a new ReferenceItem...');
+
+  //   this.title = newTitle;
+  //   this.year = newYear;
+  // }
+  
+  constructor(public title: string, protected year: number) {
+    console.log('Creating a new ReferenceItem...');
+  }
+
+  get publisher(): string {
+    return this._publisher.toUpperCase();
+  }
+
+  set publisher(newPublisher: string) {
+    this._publisher = newPublisher;
+  }
+
+  printItem(): void {
+    console.log(`${this.title} was published in ${this.year}`);
+    console.log(`Department ${ReferenceItem.department}`)
+  }
+
+  abstract printCitation(): void;
+}
+
+class Encyclopedia extends ReferenceItem {
+  constructor(newTitle: string, newYear: number, public edition: number) {
+    super(newTitle, newYear);
+  }
+
+  printItem() {
+    super.printItem();
+    console.log(`Edition: ${this.edition} (${this.year})`)
+  }
+
+  printCitation() {
+    console.log(`${this.title} - ${this.year}`);
+  }
+}
+
 // =========================================================================================
 // Task 01
 // logFirstAvailable(getAllBooks());
@@ -238,15 +299,38 @@ function printBook(book: Book): void {
 
 // Task 09
 
-const favoriteAuthor: Author = {
-  email: 'a@a.com',
-  name: 'Ann',
-  numBooksPublished: 10
-};
+// const favoriteAuthor: Author = {
+//   email: 'a@a.com',
+//   name: 'Ann',
+//   numBooksPublished: 10
+// };
 
-const favoriteLibrarian: Librarian = {
-  name: 'Boris',
-  email: 'boris@a.com',
-  department:'Classical Literature',
-  assistCustomer: (name: string) => console.log(`Assist ${name}`)
-};
+// const favoriteLibrarian: Librarian = {
+//   name: 'Boris',
+//   email: 'boris@a.com',
+//   department:'Classical Literature',
+//   assistCustomer: (name: string) => console.log(`Assist ${name}`)
+// };
+
+// Task 10
+// const favoriteLibrarian: Librarian = new UniversityLibrarian();
+// favoriteLibrarian.name = 'Ann';
+// favoriteLibrarian.assistCustomer('Boris');
+
+
+// Task 11
+
+// const ref = new ReferenceItem('Title', 2019);
+// console.log(ref);
+// ref.printItem();
+// ref.publisher = 'Ann';
+// console.log(ref.publisher);
+
+
+// Task 12
+// const refBook = new Encyclopedia('Title', 2019, 10);
+// console.log(refBook);
+// refBook.printItem();
+
+// Task 13
+// refBook.printCitation();
