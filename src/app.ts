@@ -3,6 +3,7 @@ import { Book, Logger, Author, Librarian, Magazine } from "./intefaces";
 import { ReferenceItem, UniversityLibrarian, Shelf } from "./classes";
 import RefBook from './classes/encyclopedia';
 import { purge } from './lib/utility-functions';
+import Encyclopedia from "./classes/encyclopedia";
 
 showHello('greeting', 'TypeScript');
 
@@ -296,7 +297,34 @@ function printBook(book: Book): void {
 // console.log(mag);
 
 // Task 22
-const fLibrarian = new UniversityLibrarian();
-console.log(fLibrarian);
-fLibrarian.name = 'Ann';
-fLibrarian['printLibrarian']();  // вызов метода
+// const fLibrarian = new UniversityLibrarian();
+// console.log(fLibrarian);
+// fLibrarian.name = 'Ann';
+// fLibrarian['printLibrarian']();  // вызов метода
+
+// Task23
+// const flib = new UniversityLibrarian();
+// flib.assistFaculty = null;
+// flib.teachCommunity = () => console.log('1230');
+
+// Task 24
+// const refBook = new Encyclopedia('Title', 2019, 10);
+// refBook.printItem();
+
+// Task 25
+// const flib = new UniversityLibrarian();
+// flib.name = 'Anna';
+// flib.assistCustomer('Boris');
+
+// Task 26
+// const fLib = new UniversityLibrarian();
+// fLib.name = 'Anna';
+// console.log(fLib);
+// console.log(fLib.name);
+
+// Task 27
+const refBook = new Encyclopedia('Title', 2019, 10);
+refBook.copies = 10;
+console.log(refBook.copies);
+refBook.copies = -10;
+console.log(refBook.copies);
